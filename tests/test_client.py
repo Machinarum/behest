@@ -58,8 +58,12 @@ class HTTPClient_Tests(TestFixture):
 class _HTTP_RequestTestsMixin(object):
 
     def assertExpectedResponseBodyRecieved(self, response):
-        if response.content != self.testbody:
-            self.fail("request received incorrect response body")
+        if response.text != self.testbody:
+            msg = (
+                "Malformed response body:\nexpected: "
+                "{e}\nrecieved:{r}".format(
+                    e=self.testbody, r=response.content))
+            self.fail(msg)
 
     @httpretty.activate
     def _request_test(self, verb):
@@ -103,7 +107,7 @@ class _HTTP_RequestTestsMixin(object):
 class _HTTP_RequestAliasesTestsMixin(object):
 
     def assertExpectedResponseBodyRecieved(self, response):
-        if response.content != self.testbody:
+        if response.text != self.testbody:
             self.fail("request received incorrect response body")
 
     @httpretty.activate

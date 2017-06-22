@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='behest',
     version='0.0.1',
@@ -7,7 +8,7 @@ setup(
     author='dwalleck and jidar',
     author_email='core.machinarum@gmail.com',
     install_requires=['requests', 'six'],
-    packages=find_packages(exclude=('tests*', 'docs')),
+    packages=find_packages(exclude=('tests', 'docs')),
     package_dir={'behest': 'behest'},
     classifiers=(
         'Development Status :: 4 - Beta',

@@ -7,14 +7,16 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 urllib3.disable_warnings()
 
 
-class HTTPClient(BaseClass):
+class HTTPClient(object):
+
+    @classmethod
+    def _get_log(cls):
+        return logging.getLogger(
+            "{0}.{1}".format(cls.__module__, cls.__name__))
 
     def __init__(self, *args, **kwargs):
 
-        # The base class sets up a "classproperty" that instantiates the
-        # _log object
-        super(HTTPClient, self).__init__()
-
+        self._log = self._get_log()
         # TODO: Separate the HTTPAdapter instantiation from the client so that
         # users can pass-in/choose/plugin/configure whatever behavior with
         # their own adapter.
