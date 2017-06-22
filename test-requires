@@ -1,3 +1,4 @@
 pip
 flake8
 httpretty
+tox-travis
