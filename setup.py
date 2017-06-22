@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='behest',
-    version='0.0.1',
+    version='0.0.2',
     description='A testing focused opinionated wrapper for requests.',
     author='dwalleck and jidar',
     author_email='core.machinarum@gmail.com',
