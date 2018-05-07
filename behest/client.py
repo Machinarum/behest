@@ -44,7 +44,9 @@ class HTTPClient(object):
         """
 
         if self._session:
-            return self._session.request(method=method, url=url, **kwargs)
+            r = self._session.request(method=method, url=url, **kwargs)
+            self._http_adapter.response_hook(r)
+            return r
 
         with requests.sessions.Session() as session:
             session.mount('https://', self._http_adapter)

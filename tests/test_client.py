@@ -1,6 +1,7 @@
 import unittest
 import logging
 import httpretty
+import mock
 from requests.sessions import Session
 from requests.adapters import HTTPAdapter
 from behest.client import HTTPClient
@@ -53,6 +54,26 @@ class HTTPClient_Tests(TestFixture):
             self.assertIsInstance(
                 httpc._session.adapters[adapter_mount_point],
                 HookableHTTPAdapter)
+
+    @httpretty.activate
+    def _logging_hook_test(self, httpc):
+        url = 'http://test.test/'
+        httpretty.register_uri(httpretty.GET, url)
+        httpc.request('GET', url)
+
+        hook_mock = httpc._http_adapter._loghook
+        hook_mock.log_request.assert_called_once_with(mock.ANY)
+        hook_mock.log_response.assert_called_once_with(mock.ANY)
+
+    def test_ephemeral_session_calls_logging_hook_on_request(self):
+        self._logging_hook_test(
+            HTTPClient(logging_hook=mock.MagicMock()),
+        )
+
+    def test_persistent_session_calls_logging_hook_on_request(self):
+        self._logging_hook_test(
+            HTTPClient(logging_hook=mock.MagicMock(), persistent_session=True),
+        )
 
 
 class _HTTP_RequestTestsMixin(object):
